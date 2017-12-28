@@ -8,6 +8,15 @@ import (
 	lua "github.com/yuin/gopher-lua"
 )
 
+func RetError(L *lua.LState, err error) int {
+	if err != nil {
+		L.Push(lua.LString(err.Error()))
+	} else {
+		L.Push(lua.LNil)
+	}
+	return 1
+}
+
 func RetBool(L *lua.LState, v bool) int {
 	L.Push(lua.LBool(v))
 	return 1
