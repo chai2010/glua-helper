@@ -5,8 +5,32 @@
 package helper
 
 import (
+	"fmt"
+
 	lua "github.com/yuin/gopher-lua"
 )
+
+func Return(L *lua.LState, args ...interface{}) int {
+	for _, a := range args {
+		switch a := a.(type) {
+		case error:
+			L.Push(lua.LString(a.Error()))
+		case bool:
+			RetBool(L, a)
+		case int:
+			RetInt(L, a)
+		case []int:
+			RetIntList(L, a)
+		case string:
+			RetString(L, a)
+		case []string:
+			RetStringList(L, a)
+		default:
+			RetString(L, fmt.Sprint(a))
+		}
+	}
+	return len(args)
+}
 
 func RetError(L *lua.LState, err error) int {
 	if err != nil {
