@@ -5,10 +5,30 @@
 package helper
 
 import (
+	"fmt"
 	"strconv"
 
 	lua "github.com/yuin/gopher-lua"
 )
+
+func Check(L *lua.LState, idx0 int, args ...interface{}) {
+	for i, a := range args {
+		switch a := a.(type) {
+		case *bool:
+			*a = L.CheckBool(idx0 + i)
+		case *int:
+			*a = L.CheckInt(idx0 + i)
+		case *string:
+			*a = L.CheckString(idx0 + i)
+		case []int:
+			a = append(a, CheckIntList(L, idx0+i)...)
+		case []string:
+			a = append(a, CheckStringList(L, idx0+i)...)
+		default:
+			panic(fmt.Sprintf("unknown type: %T", a))
+		}
+	}
+}
 
 func CheckAnyList(L *lua.LState, n int) []lua.LValue {
 	v := L.Get(n)
