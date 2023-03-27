@@ -34,7 +34,7 @@ func CheckAnyList(L *lua.LState, n int) []lua.LValue {
 	v := L.Get(n)
 	if tb, ok := v.(*lua.LTable); ok {
 		var ret []lua.LValue
-		for i := 0; i < tb.Len(); i++ {
+		for i := 1; i <= tb.Len(); i++ {
 			ret = append(ret, tb.RawGetInt(i))
 		}
 		return ret
@@ -48,7 +48,7 @@ func CheckIntList(L *lua.LState, n int) []int {
 	v := L.Get(n)
 	if tb, ok := v.(*lua.LTable); ok {
 		var ret []int
-		for i := 0; i < tb.Len(); i++ {
+		for i := 1; i <= tb.Len(); i++ {
 			item := tb.RawGetInt(i)
 			if lv, ok := item.(lua.LNumber); ok {
 				ret = append(ret, int(lv))
@@ -68,7 +68,7 @@ func CheckStringList(L *lua.LState, n int) []string {
 	v := L.Get(n)
 	if tb, ok := v.(*lua.LTable); ok {
 		var ret []string
-		for i := 0; i < tb.Len(); i++ {
+		for i := 1; i <= tb.Len(); i++ {
 			item := tb.RawGetInt(i)
 			if lv, ok := item.(lua.LString); ok {
 				ret = append(ret, string(lv))
